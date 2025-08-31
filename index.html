@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hisab - Expense Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-calculator"></i> Hisab</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-view="main">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Transaction</span>
+            </a>
+            <a href="#" class="nav-item" data-view="dashboard">
+                <i class="fas fa-chart-bar"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-view="history">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button id="exportBtn" class="sidebar-btn">
+                <i class="fas fa-download"></i>
+                <span>Export</span>
+            </button>
+            <button id="clearAllBtn" class="sidebar-btn danger">
+                <i class="fas fa-trash"></i>
+                <span>Clear All</span>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <button id="menuToggle" class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1>Add Transaction</h1>
+
+        </div>
+
+        <div class="container">
+
+
+            <!-- Main View -->
+            <div id="mainView">
+                <div class="welcome-section">
+                    <h2>Surana Sadan Hisab</h2>
+
+                </div>
+                
+                <div class="add-transaction-section">
+                    <div class="form-toggle">
+                        <button type="button" class="toggle-btn active" data-type="expense">
+                            <i class="fas fa-minus-circle"></i> पैसे दिले
+                        </button>
+                        <button type="button" class="toggle-btn" data-type="income">
+                            <i class="fas fa-plus-circle"></i> पैसे मिळाले
+                        </button>
+                    </div>
+                    <h2 id="formTitle">Add New Expense</h2>
+                    <form id="expenseForm">
+                        <div class="form-group">
+                            <label for="amount">Amount (₹)</label>
+                            <input type="number" id="amount" name="amount" step="0.01" required placeholder="Enter amount">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input type="text" id="description" name="description" required placeholder="What was this transaction for?">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" required>
+                                <option value="">Select category</option>
+                                <option value="food">Food & Groceries</option>
+                                <option value="transport">Transport</option>
+                                <option value="utilities">Utilities (Electricity, Water, etc.)</option>
+                                <option value="business">Business Expenses</option>
+                                <option value="health">Health & Medical</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select id="type" name="type" required>
+                                <option value="">Select type</option>
+                                <option value="personal">Personal</option>
+                                <option value="business">Business</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group income-field" style="display: none;">
+                            <label for="source">Income Source</label>
+                            <input type="text" id="source" name="source" placeholder="Who paid you? (e.g., Client name, Salary)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Transaction
+                            </button>
+                            <button type="button" id="cancelEditBtn" class="btn-secondary" style="display: none;">
+                                <i class="fas fa-times"></i> Cancel Edit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="dashboardView">
+                <div class="dashboard-header">
+                    <h2>Financial Dashboard</h2>
+                </div>
+                
+                <!-- Today's Summary Cards -->
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <h3>Today's Income</h3>
+                        <p class="amount income" id="todayIncome">₹0</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Today's Expenses</h3>
+                        <p class="amount expense" id="todayExpenses">₹0</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Today's Balance</h3>
+                        <p class="amount balance" id="todayBalance">₹0</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>This Month</h3>
+                        <div class="dashboard-amounts">
+                            <div class="amount-row">
+                                <span>Income:</span>
+                                <span class="amount income" id="monthIncome">₹0</span>
+                            </div>
+                            <div class="amount-row">
+                                <span>Expenses:</span>
+                                <span class="amount expense" id="monthExpenses">₹0</span>
+                            </div>
+                            <div class="amount-row total">
+                                <span>Balance:</span>
+                                <span class="amount balance" id="monthBalance">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Recent Activity</h3>
+                        <div class="recent-transactions" id="recentTransactions">
+                            <!-- Recent transactions will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History View -->
+            <div id="historyView">
+                <div class="history-header">
+                    <h2>Transaction History</h2>
+                    <div class="filter-controls">
+                        <select id="filterTransactionType">
+                            <option value="">All Transactions</option>
+                            <option value="expense">Expenses Only</option>
+                            <option value="income">Income Only</option>
+                        </select>
+                        <select id="filterCategory">
+                            <option value="">All Categories</option>
+                            <option value="food">Food & Groceries</option>
+                            <option value="transport">Transport</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="business">Business</option>
+                            <option value="health">Health & Medical</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="other">Other</option>
+                            <option value="salary">Salary</option>
+                            <option value="client">Client Payment</option>
+                            <option value="investment">Investment</option>
+                            <option value="other-income">Other Income</option>
+                        </select>
+                        <select id="filterType">
+                            <option value="">All Types</option>
+                            <option value="personal">Personal</option>
+                            <option value="business">Business</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="transactions-list" id="transactionsList">
+                    <!-- Transactions will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase Client for Database Only -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
